@@ -1,7 +1,7 @@
 <div class="fieldset">
     <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
     <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
-    <?php if (version_compare(Mage::getVersion,"1.9.2.2",">=")): ?>
+    <?php if (version_compare(Mage::getVersion(),"1.9.2.2",">=")): ?>
         <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
     <?php endif; ?>
     <h2 class="legend"><?php echo $this->__('Personal Information') ?></h2>
