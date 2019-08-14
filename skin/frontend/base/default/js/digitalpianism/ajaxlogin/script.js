@@ -381,6 +381,72 @@ AjaxLogin.prototype = {
             });
         });
 
+        $('ajaxlogin-create-form') && $('ajaxlogin-create-form').observe('submit', function(e) {
+            if (typeof event != 'undefined') { // ie9 fix
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
+            }
+            Event.stop(e);
+
+            if (!ajaxLoginForm.validator.validate()) {
+                return false;
+            }
+
+            $('create-please-wait').show();
+            $('create').setAttribute('disabled', 'disabled');
+            $$('#ajaxlogin-create-form .buttons-set')[0]
+                .addClassName('disabled')
+                .setOpacity(0.5);
+
+            new Ajax.Request($('ajaxlogin-create-form').action, {
+                parameters: $('ajaxlogin-create-form').serialize(),
+                onSuccess: function(transport) {
+                    var section = $('ajaxlogin-create-form');
+                    if (!section) {
+                        return;
+                    }
+                    var ul = section.select('.messages')[0];
+                    if (ul) {
+                        ul.remove();
+                    }
+
+                    var response = transport.responseText.evalJSON();
+                    if (response.error) {
+                        var section = $('ajaxlogin-create-form');
+                        if (!section) {
+                            return;
+                        }
+                        var ul = section.select('.messages')[0];
+                        if (!ul) {
+                            section.insert({
+                                top: '<ul class="messages"></ul>'
+                            });
+                            ul = section.select('.messages')[0]
+                        }
+                        var li = $(ul).select('.error-msg')[0];
+                        if (!li) {
+                            $(ul).insert({
+                                top: '<li class="error-msg"><ul></ul></li>'
+                            });
+                            li = $(ul).select('.error-msg')[0];
+                        }
+                        $(li).select('ul')[0].insert(
+                            '<li>' + response.error + '</li>'
+                        );
+                        self.updateCaptcha('user_login');
+                    }
+                    if (response.redirect) {
+                        document.location = response.redirect;
+                        return;
+                    }
+                    $('create-please-wait').hide();
+                    $('create').removeAttribute('disabled');
+                    $$('#ajaxlogin-create-form .buttons-set')[0]
+                        .removeClassName('disabled')
+                        .setOpacity(1);
+                }
+            });
+        });
+
         $('ajaxlogin-forgot-password-form') && $('ajaxlogin-forgot-password-form').observe('submit', function(e) {
             if (typeof event != 'undefined') { // ie9 fix
                 event.preventDefault ? event.preventDefault() : event.returnValue = false;
