@@ -126,13 +126,12 @@ class DigitalPianism_AjaxLogin_IndexController extends Mage_Core_Controller_Fron
             $customerHelper = Mage::helper('customer');
             $session->addSuccess($this->__('Account confirmation is required. Please, check your email for the confirmation link. To resend the confirmation email please <a href="%s">click here</a>.',
                 $customerHelper->getEmailConfirmationUrl($customer->getEmail())));
-            $url = $this->_getUrl('*/*/index', array('_secure' => true));
+            $url = $this->_getUrl('customer/account/index', array('_secure' => true));
         } else {
             $session->setCustomerAsLoggedIn($customer);
             $url = $this->_welcomeCustomer($customer);
         }
-        $this->_redirectSuccess($url);
-        return $this;
+        return $url;
     }
 
     /**
@@ -170,7 +169,7 @@ class DigitalPianism_AjaxLogin_IndexController extends Mage_Core_Controller_Fron
             Mage::app()->getStore()->getId()
         );
 
-        $successUrl = Mage::getUrl('*/*/index', array('_secure' => true));
+        $successUrl = Mage::getUrl('customer/account/index', array('_secure' => true));
         if (Mage::getSingleton('customer/session')->getBeforeAuthUrl()) {
             $successUrl = Mage::getSingleton('customer/session')->getBeforeAuthUrl(true);
         }
@@ -226,9 +225,8 @@ class DigitalPianism_AjaxLogin_IndexController extends Mage_Core_Controller_Fron
                 Mage::dispatchEvent('customer_register_success',
                     array('account_controller' => $this, 'customer' => $customer)
                 );
-                $this->_successProcessRegistration($customer);
+                $result['redirect'] = $this->_successProcessRegistration($customer);
                 $result['success'] = true;
-                return;
             } else {
                 $result['error'] = $errors;
                 $this->_addSessionError($errors);
