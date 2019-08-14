@@ -387,7 +387,7 @@ AjaxLogin.prototype = {
             }
             Event.stop(e);
 
-            if (!ajaxLoginForm.validator.validate()) {
+            if (!ajaxCreateForm.validator.validate()) {
                 return false;
             }
 
@@ -536,7 +536,7 @@ AjaxLogin.prototype = {
                         $(li).select('ul')[0].insert(
                             '<li>' + response.message + '</li>'
                         );
-                        ajaxloginWindow.activate('login');
+                        ajaxLoginWindow.activate('login');
                     }
                 }
             });
