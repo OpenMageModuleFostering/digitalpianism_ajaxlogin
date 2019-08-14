@@ -321,7 +321,7 @@ AjaxLogin.prototype = {
             }
             Event.stop(e);
 
-            if (!loginForm.validator.validate()) {
+            if (!ajaxLoginForm.validator.validate()) {
                 return false;
             }
 
@@ -387,7 +387,7 @@ AjaxLogin.prototype = {
             }
             Event.stop(e);
 
-            if (!forgotForm.validator.validate()) {
+            if (!ajaxForgotForm.validator.validate()) {
                 return false;
             }
 
@@ -482,7 +482,7 @@ AjaxLogin.prototype = {
             }
             Event.stop(e);
 
-            if (!loginForm.validator.validate()) {
+            if (!ajaxLogoutForm.validator.validate()) {
                 return false;
             }
 
