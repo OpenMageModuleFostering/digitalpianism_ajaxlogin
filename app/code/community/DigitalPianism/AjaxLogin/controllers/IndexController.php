@@ -199,6 +199,14 @@ class DigitalPianism_AjaxLogin_IndexController extends Mage_Core_Controller_Fron
         // Clear the messages each time we call it
         Mage::getSingleton('core/session')->getMessages(true);
 
+        if (version_compare(Mage::getVersion(),"1.9.2.2",">="))
+        {
+            // Only from 1.9.2.2
+            if (!$this->_validateFormKey()) {
+                return;
+            }
+        }
+
         $session = Mage::getSingleton('customer/session');
 
         if ($session->isLoggedIn()) {
